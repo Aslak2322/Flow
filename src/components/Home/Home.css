@@ -37,19 +37,19 @@
 }
 
 .info h2 {
-    color: aliceblue;
+    color: rgb(0, 200, 255);
 }
 .booking h2 {
-    color: aliceblue;
+    color: rgb(0, 200, 255);
 }
 .cafe h2 {
-    color: aliceblue;
+    color: rgb(0, 200, 255);
 }
 .contact h2 {
-    color: aliceblue;
+    color: rgb(0, 200, 255);
 }
 .shop h2 {
-    color: aliceblue;
+    color: rgb(0, 200, 255);
 }
 
 button {

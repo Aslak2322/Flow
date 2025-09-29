@@ -1,0 +1,18 @@
+.ProductCard {
+    background-color: white;
+    border: 1px solid black;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25%;
+}
+
+ul {
+    list-style: none;
+}
+
+
+.ProductCard button {
+    height: 50%;
+}

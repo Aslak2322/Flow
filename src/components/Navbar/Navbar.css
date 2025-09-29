@@ -1,0 +1,19 @@
+.sidebar ul {
+    display: flex;
+    flex-direction: row;
+    height: 200px;
+    width: 100%;
+    list-style-type: none;
+    justify-content: space-around;
+    height: 40px;
+    margin: 0;
+    background-color: whitesmoke;
+    align-items: center;
+    color: black;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+    font-size: 20px;
+}

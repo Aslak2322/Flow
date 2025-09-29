@@ -1,0 +1,35 @@
+h2 {
+    color: black;
+}
+
+.flexbox {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    font-size: 22px;
+    border: solid black 1px;
+}
+
+.invention {
+    height: 400px;
+    width: 400px;
+}
+
+.how {
+    height: 400px;
+    width: 400px;
+}
+
+.tricks {
+    height: 400px;
+    width: 400px;
+}
+
+.about img {
+    width: auto;
+    height: auto;
+}
+
+.about {
+    background-color: rgb(119, 221, 255);
+}

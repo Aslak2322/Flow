@@ -1,0 +1,43 @@
+.cafeTab h3 {
+    color: black;
+    font-size: 25px;
+}
+
+.main-image img {
+    height: auto;
+    width: 80%;
+}
+
+.flexbox {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 5px;
+    background-color: rgb(181, 244, 255);
+}
+
+image {
+    height: auto;
+}
+
+.cafeTab {
+    border: solid black 1px;
+    background-color: rgb(119, 221, 255);
+}
+
+.Drinks img {
+    height: auto;
+    width: 100%;
+}
+
+.Drinks {
+    width: 50%;
+}
+
+.Foods {
+    width: 50%
+}
+
+.Foods img {
+    width: 100%;
+    height: auto;
+}

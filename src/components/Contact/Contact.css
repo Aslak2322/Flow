@@ -1,0 +1,22 @@
+.contact-box {
+    display: flex;
+    justify-content: space-around;
+}
+
+.email {
+    font-family: "Fugaz One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 20px;   
+}
+
+.call {
+  font-family: "Knewave", system-ui;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 20px;
+}
+
+body {
+    background-color: rgb(119, 221, 255);
+  }

@@ -1,0 +1,61 @@
+.Home {
+ background-image: url('../../../public/Images/Home.jpg');
+ height: 100%;
+ background-repeat: no-repeat;        /* ✅ stops tiling */
+ background-position: center center;
+ background-size: cover; 
+}
+
+.Home h1 {
+    font-family: "Alfa Slab One", serif;
+    font-weight: 400;
+    font-style: normal;
+    margin-top: 10px;
+    padding: 10px 0 10px 0;
+    border: 1px solid black;
+    background-color: rgb(119, 221, 255);
+}
+
+
+.info {
+    height: 200px;
+}
+
+.booking {
+    height: 200px;
+}
+
+.cafe {
+    height: 200px;
+}
+
+.contact {
+    height: 200px;
+}
+.shop {
+    height: 200px;
+}
+
+.info h2 {
+    color: aliceblue;
+}
+.booking h2 {
+    color: aliceblue;
+}
+.cafe h2 {
+    color: aliceblue;
+}
+.contact h2 {
+    color: aliceblue;
+}
+.shop h2 {
+    color: aliceblue;
+}
+
+button {
+    border-radius: 22px;
+    height: 60px;
+    width: 120px;
+    background-color: whitesmoke;
+    color: black;
+}

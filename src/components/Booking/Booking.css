@@ -1,0 +1,43 @@
+.gridContainer {
+    display: grid;
+    grid-template-columns:1fr;
+    color:black;
+    background-color: rgb(119, 221, 255);
+}
+.gridContainer h2 {
+    color: black;
+}
+
+.submit {
+    margin: 0 auto;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    height: 100px;
+    width: 150px;
+    border-radius: 50%;
+    background-color: rgb(168, 255, 168);
+    color: black;
+    font-size: 20px;
+}
+
+.table {
+    margin: 0 auto;
+    background-color:rgb(119, 221, 255);
+    
+}
+.mini {
+    display: flex;
+    justify-content: center;
+    border-color: black;
+    padding: 5px;
+    height: 100px;
+}
+.mini button {
+    color: black;
+    background-color: rgb(230, 255, 252);
+    height: 100%;
+    width: 25%;
+    font-size: 20px;
+    border-radius: 50%;
+    margin: 5px;
+}

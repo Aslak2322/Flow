@@ -1,0 +1,15 @@
+img {
+    width: 250px;
+    height: 300px;
+}
+
+.card-list {
+    display: flex;
+    margin: 50px;
+    border: solid black 1px;
+    justify-content: space-around;
+}
+
+.Product {
+    margin:5px;
+}

@@ -3,15 +3,31 @@ const app = express();
 const PORT = 4000; // use a different port
 const { Client } = require('pg');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+require('dotenv').config();
 
 // Replace these with your actual database settings
 const client = new Client({
-  user: 'aslakbennedsen',
-  host: 'localhost',        // or remote host like 'db.example.com'
-  database: 'Flow',
-  password: 'Milla-2009',
-  port: 5432,               // default PostgreSQL port
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASS,
+  port: process.env.DB_PORT,              
 });
+
+const auth = (req, res, next) => {
+  const token = req.headers['authorization']?.split(' ')[1]; // "Bearer <token>"
+  if (!token) return res.status(401).json({ error: 'Access denied. No token provided.' });
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET); 
+    req.user = decoded; // { id: ..., email: ... }
+    next();
+  } catch (err) {
+    res.status(400).json({ error: 'Invalid token' });
+  }
+};
 
 client.connect(); // <== REQUIRED to actually open the connection
 
@@ -21,6 +37,47 @@ app.use(cors());
 
 app.listen(PORT, () => {
     console.log(`Backend server running on http://localhost:${PORT}`);
+  });
+
+  app.post('/signup', async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      const hashed = await bcrypt.hash(password, 10);
+  
+      const result = await client.query(
+        'INSERT INTO users(email, password_hash) VALUES($1, $2) RETURNING id, email',
+        [email, hashed]
+      );
+  
+      res.json(result.rows[0]);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Signup failed' });
+    }
+  });
+
+  app.post('/login', async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      const result = await client.query('SELECT * FROM users WHERE email=$1', [email]);
+      const user = result.rows[0];
+  
+      if (!user) return res.status(400).json({ error: 'Invalid credentials' });
+  
+      const valid = await bcrypt.compare(password, user.password_hash);
+      if (!valid) return res.status(400).json({ error: 'Invalid credentials' });
+  
+      const token = jwt.sign(
+        { id: user.id, email: user.email },
+        process.env.JWT_SECRET,
+        { expiresIn: '1h' }
+      );
+  
+      res.json({ token });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Login failed' });
+    }
   });
 
   app.get('/bookings', async (req, res) => {
@@ -98,7 +155,7 @@ app.listen(PORT, () => {
     res.json({ message: 'Item removed' });
   });
 
-  app.post("/checkout", async (req, res) => {
+  app.post("/checkout", auth, async (req, res) => {
     const { cart, user_id } = req.body;
   
     const products = cart.filter(item => item.type === "Product");

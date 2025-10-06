@@ -17,3 +17,7 @@
     color: rgb(0, 0, 0);
     font-size: 20px;
 }
+
+.logged-in button {
+    height: 50%;
+}

@@ -16,21 +16,6 @@ function Booking({ addToCart, cart}) {
     {startTime: '17:00', endTime: '18:00'}
   ];
 
-  const getBookings = async () => {
-    const url = "http://localhost:4000/bookings"
-    try {
-      const response = await fetch(url)
-      if (!response.ok) {
-        throw new Error(`response status: ${response.status}`)
-      }
-      const result = await response.json();
-      console.log(result);
-      console.log("Clicked")
-    } catch (error) {
-      console.error(error.message);
-    }
-  }
-
   // Track selected slots, for example as an array of strings 'row-col'
   const [selectedSlots, setSelectedSlots] = useState([]);
 

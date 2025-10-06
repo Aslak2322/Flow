@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const PORT = 4000; // use a different port
@@ -5,7 +6,6 @@ const { Client } = require('pg');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-require('dotenv').config();
 
 // Replace these with your actual database settings
 const client = new Client({
@@ -25,6 +25,7 @@ const auth = (req, res, next) => {
     req.user = decoded; // { id: ..., email: ... }
     next();
   } catch (err) {
+    console.log(req)
     res.status(400).json({ error: 'Invalid token' });
   }
 };
@@ -33,23 +34,46 @@ client.connect(); // <== REQUIRED to actually open the connection
 
 app.use(express.json());
 
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:3000", 
+  credentials: true
+}));
 
-app.listen(PORT, () => {
+if (require.main === module) {
+  // Only listen if this file is run directly with "node server.js"
+  app.listen(PORT, () => {
     console.log(`Backend server running on http://localhost:${PORT}`);
   });
+}
 
   app.post('/signup', async (req, res) => {
     try {
       const { email, password } = req.body;
+
+      if (!email || !password) {
+        return res.status(400).json({ error: 'Email or password missing'});
+      }
+
       const hashed = await bcrypt.hash(password, 10);
+
+      const existing = await client.query('SELECT 1 FROM users WHERE email=$1', [email]);
+      if (existing.rowCount > 0) {
+        return res.status(400).json({ error: 'Email already in use' });
+      }
   
       const result = await client.query(
         'INSERT INTO users(email, password_hash) VALUES($1, $2) RETURNING id, email',
         [email, hashed]
       );
+      const user = result.rows[0];
   
-      res.json(result.rows[0]);
+      const token = jwt.sign(
+        { id: user.id, email: user.email },
+        process.env.JWT_SECRET,
+        { expiresIn: '1h' }
+      );
+  
+      res.json({ success: true, user, token }); // send token for automatic login
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: 'Signup failed' });
@@ -73,7 +97,7 @@ app.listen(PORT, () => {
         { expiresIn: '1h' }
       );
   
-      res.json({ token });
+      res.json({ success: true, user: { id: user.id, email: user.email }, token });
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: 'Login failed' });
@@ -100,63 +124,34 @@ app.listen(PORT, () => {
       res.status(500).json({ error: 'Failed to fetch products'})
     }
   })
-
-  app.post('/bookings', async (req, res) => {
-    try {
-      const { starttime, endtime, user_id } = req.body
-      const result = await client.query('INSERT INTO bookings (starttime, endtime, user_id) VALUES ($1, $2, $3) RETURNING *', [starttime, endtime, user_id]
-      );
-      res.json(result.rows[0])
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({error: 'Failed to post booking'})
-    }
-  });
-
-  app.post('/cart', async (req, res) => {
-    try {
-      const { user_id, product_id, quantity } = req.body;
-      const result = await client.query('INSERT INTO cart_items (user_id, product_id, quantity) VALUES ($1, $2, $3) RETURNING *', [user_id, product_id, quantity]);
-      res.json(result.rows[0])
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Failed to add to cart'})
-    }
-  })
   
-  app.get('/cart/:user_id', async (req, res) => {
-    try {
-      const { user_id } = req.params;
-      const result = await client.query(
-        `SELECT c.id, c.quantity, p.*
-        FROM cart_items c
-        JOIN products p ON c.product_id = p.id
-        WHERE c.user_id = $1`, [user_id]
-      );
-    } catch (error) {
-      console.error(error)
-      res.status(500).json({ error: 'Failed to get cart'})
-    }
-  })
-
-  app.put('/cart/:id', async (req, res) => {
-    const { id } = req.params;
-    const { quantity } = req.body;
-    const result = await client.query(
-      'UPDATE cart_items SET quantity=$1 WHERE id=$2 RETURNING *',
-      [quantity, id]
-    );
-    res.json(result.rows[0]);
-  });
-
-  app.delete('/cart/:id', async (req, res) => {
-    const { id } = req.params;
-    await client.query('DELETE FROM cart_items WHERE id=$1', [id]);
-    res.json({ message: 'Item removed' });
-  });
-
   app.post("/checkout", auth, async (req, res) => {
-    const { cart, user_id } = req.body;
+    const { cart } = req.body;
+
+    // 1️⃣ Validate cart
+    if (!Array.isArray(cart) || cart.length === 0) {
+      return res.status(400).json({ success: false, message: "Cart is invalid or empty" });
+    }
+
+    for (let item of cart) {
+      if (!item.type) {
+        return res.status(400).json({ success: false, message: "Cart item missing type" });
+      }
+
+      if (item.type === "Product") {
+        if (!item.id || typeof item.price !== "number") {
+          return res.status(400).json({ success: false, message: "Product item is invalid" });
+        }
+      }
+
+      if (item.type === "Booking") {
+        if (!item.date || !item.starttime || !item.endtime || typeof item.price !== "number") {
+          return res.status(400).json({ success: false, message: "Booking item is invalid" });
+        }
+      }
+    }
+
+    const user_id = req.user.id;
   
     const products = cart.filter(item => item.type === "Product");
     const bookings = cart.filter(item => item.type === "Booking");
@@ -182,7 +177,7 @@ app.listen(PORT, () => {
       for (let booking of bookings) {
         await client.query(
           "INSERT INTO bookings(starttime, endtime, user_id, date, price) VALUES($1, $2, $3, $4, $5)",
-          [booking.starttime, booking.endtime, booking.user_id, booking.date, booking.price]
+          [booking.starttime, booking.endtime, user_id, booking.date, booking.price]
         );
       }
       res.json({ success: true });
@@ -192,3 +187,6 @@ app.listen(PORT, () => {
       res.status(500).json({ success: false, message: err.message });
     }
   });
+
+
+  module.exports = { app, auth };

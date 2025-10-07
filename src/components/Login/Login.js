@@ -11,8 +11,8 @@ function Login({ onLogin }) {
 
     try {
       const endpoint = isSignup
-        ? 'http://localhost:4000/signup'
-        : 'http://localhost:4000/login';
+        ? `${process.env.REACT_APP_BACKEND_URL}/signup`
+        : `${process.env.REACT_APP_BACKEND_URL}/login`;
 
       const res = await fetch(endpoint, {
         method: 'POST',

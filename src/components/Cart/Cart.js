@@ -14,7 +14,7 @@ function Cart({ cart, setCart, removeFromCart, user }) {
     }
 
     try {
-      const response = await fetch("http://localhost:4000/checkout", {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/checkout`, {
         method: "POST",
         headers: { 
           "Content-Type": "application/json", 

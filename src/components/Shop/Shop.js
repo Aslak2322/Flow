@@ -15,7 +15,7 @@ function Shop({cart, addToCart}) {
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
-        fetch('http://localhost:4000/products')
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/products`)
           .then(res => res.json())
           .then(data => {
             setProducts(data)

@@ -20,7 +20,6 @@
   },
   "scripts": {
     "start": "node server.js",
-    "build": "react-scripts build",
     "test": "react-scripts test --runInBand",
     "eject": "react-scripts eject"
   },

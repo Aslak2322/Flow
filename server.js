@@ -137,7 +137,7 @@ app.post("/checkout", auth, async (req, res) => {
 if (process.env.NODE_ENV === 'production') {
   const path = require('path');
   app.use(express.static(path.join(__dirname, 'build')));
-  app.get('/:path(*)', (req, res) => {
+  app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
   });
 }

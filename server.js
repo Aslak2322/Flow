@@ -136,7 +136,9 @@ app.post("/checkout", auth, async (req, res) => {
 if (process.env.NODE_ENV === 'production') {
   const path = require('path');
   app.use(express.static(path.join(__dirname, 'build')));
-  app.get('/*', (req, res) => {
+
+  // Fallback for React Router
+  app.use((req, res) => {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
   });
 }

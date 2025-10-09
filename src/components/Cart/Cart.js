@@ -58,7 +58,7 @@ function Cart({ cart, setCart, removeFromCart, user }) {
               )}
               {item.type === 'Booking' && (
                 <div className='ProductCard'>
-                  <span><strong>Booking</strong>: {item.date} {item.starttime}-{item.endtime} - ${item.price}</span>
+                  <span><strong>Booking</strong>: {item.date} {item.starttime}-{item.endtime} - $50</span>
                   <button onClick={() => removeFromCart(item.id)}>Remove</button>
                 </div>
               )}
@@ -74,4 +74,3 @@ function Cart({ cart, setCart, removeFromCart, user }) {
 export default Cart;
 
 
-//Fix the bookign conditional.

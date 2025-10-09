@@ -94,7 +94,7 @@ function Booking({ addToCart, cart}) {
           type: 'Booking',
           date,
           user_id: 1,
-          price: slot.price || 0 
+          price: slot.price || 50 
         };
     
         addToCart(bookingItem); // add to cart    

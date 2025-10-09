@@ -123,9 +123,10 @@ app.post("/checkout", auth, async (req, res) => {
     }
 
     for (let booking of bookings) {
+      const price = booking.price ?? 50; // fallback to 50 if undefined
       await client.query(
         "INSERT INTO bookings(starttime, endtime, user_id, date, price) VALUES($1, $2, $3, $4, $5)",
-        [booking.starttime, booking.endtime, user_id, booking.date, booking.price]
+        [booking.starttime, booking.endtime, user_id, booking.date, price]
       );
     }
 

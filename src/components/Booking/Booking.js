@@ -99,10 +99,6 @@ function Booking({ addToCart, cart, user}) {
     
         addToCart(bookingItem); // add to cart   
       }
-
-      console.log(bookingItem) 
-      console.log("HHHEEEELOOOO")
-      console.log(bookingItem.price)
   
       alert('Bookings submitted successfully!');
       console.log(`Cart ${cart}`)

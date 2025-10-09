@@ -73,7 +73,7 @@ function Booking({ addToCart, cart, user}) {
     }
   
     try {
-      console.log("Trying")
+      console.log("HELO")
       for (let slotId of selectedSlots) {
         // Split slotId properly
         const parts = slotId.split('-');
@@ -96,12 +96,13 @@ function Booking({ addToCart, cart, user}) {
           user_id: user?.id,
           price: 50 
         };
-        console.log(bookingItem.price)
     
         addToCart(bookingItem); // add to cart   
-        console.log(bookingItem) 
-        console.log("HHHEEEELOOOO")
       }
+
+      console.log(bookingItem) 
+      console.log("HHHEEEELOOOO")
+      console.log(bookingItem.price)
   
       alert('Bookings submitted successfully!');
       console.log(`Cart ${cart}`)

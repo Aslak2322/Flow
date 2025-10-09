@@ -98,7 +98,8 @@ function Booking({ addToCart, cart, user}) {
         };
         console.log(bookingItem.price)
     
-        addToCart(bookingItem); // add to cart    
+        addToCart(bookingItem); // add to cart   
+        console.log(bookingItem) 
       }
   
       alert('Bookings submitted successfully!');

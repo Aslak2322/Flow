@@ -96,7 +96,7 @@ function Booking({ addToCart, cart, user}) {
           user_id: user?.id,
           price: 50 
         };
-        console.log(bookingItem)
+        console.log(bookingItem.price)
     
         addToCart(bookingItem); // add to cart    
       }

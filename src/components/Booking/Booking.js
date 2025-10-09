@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Booking.css';
 
-function Booking({ addToCart, cart}) {
+function Booking({ addToCart, cart, user}) {
   const [currentWeekStart, setCurrentWeekStart] = useState(getMonday(new Date()));
   const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   const timeSlots = [
@@ -94,7 +94,7 @@ function Booking({ addToCart, cart}) {
           type: 'Booking',
           date,
           user_id: user?.id,
-          price: slot.price || 50 
+          price: 50 
         };
     
         addToCart(bookingItem); // add to cart    

@@ -93,7 +93,7 @@ function Booking({ addToCart, cart}) {
           endtime: slot.endTime,
           type: 'Booking',
           date,
-          user_id: 1,
+          user_id: user?.id,
           price: slot.price || 50 
         };
     

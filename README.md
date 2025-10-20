@@ -16,7 +16,7 @@ Upload to the shop through the database. Upload a product name, description, pri
 Build command is therefore just npm install.
 
 
-# Getting Started with Create React App
+### Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

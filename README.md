@@ -17,7 +17,7 @@ This project uses a **PERN stack** (PostgreSQL, Express, React, Node.js).
 - **Backend (Express/Node)** follows a **classic MVC (Model–View–Controller)** structure:
   - **Model:** database models and queries (PostgreSQL)
   - **Controller:** Express route handlers
-  - **View:** (not applicable since the frontend is separate)
+  - **View:** handled by the frontend (React) — backend returns JSON only
 
 The frontend and backend communicate via a **REST API**.
 
@@ -30,6 +30,7 @@ This demo website integrates:
 - 🏄 A **booking system** for flow sessions  
 - ☕ A **café menu**  
 - 🛍️ A **shop** for products like flowboards and boardshorts
+- 💡 An **about** page
 
 ---
 
